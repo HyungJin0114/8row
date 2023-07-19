@@ -9,8 +9,8 @@ const {
   completeOrder,
 } = require('../controllers/order');
 
-router.get('/:storeId/orders', getOrder);
-router.post('/:storeId/orders', isSignedIn, isAdmin, createOrder);
+router.get('/:storeId/orders', isAdmin, getOrder);
+router.post('/:storeId/orders', isSignedIn, createOrder);
 router.delete('/:storeId/orders/:orderId', isSignedIn, isAdmin, deleteOrder);
 router.patch('/:storeId/orders/:orderId', isSignedIn, isAdmin, completeOrder);
 
