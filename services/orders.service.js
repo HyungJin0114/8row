@@ -24,7 +24,7 @@ class OrderService {
           point -= price;
           await this.orderRepository.updateUserPoint(userId, point, t);
         } else {
-          return '400, 포인트 잔액이 부족합니다.';
+          return '400@포인트 잔액이 부족합니다.';
         }
 
         let sales = await this.orderRepository.checkStoreSales(storeId, t);

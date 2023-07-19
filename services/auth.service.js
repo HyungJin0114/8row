@@ -1,4 +1,4 @@
-const AuthRepo = require('../repository/auth');
+const AuthRepo = require('../repositories/auth.repository');
 const bcrypt = require('bcrypt');
 
 class AuthService {
