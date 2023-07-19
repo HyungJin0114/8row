@@ -7,7 +7,6 @@ class User extends Sequelize.Model {
         name: {
           type: Sequelize.STRING(15),
           allowNull: false,
-          unique: true,
         },
         email: {
           type: Sequelize.STRING(40),
@@ -21,10 +20,12 @@ class User extends Sequelize.Model {
         phoneNumber: {
           type: Sequelize.STRING(15),
           allowNull: false,
+          unique: true
         },
         nickname: {
           type: Sequelize.STRING(20),
           allowNull: false,
+          unique:true
         },
         isAdmin: {
           type: Sequelize.BOOLEAN,
