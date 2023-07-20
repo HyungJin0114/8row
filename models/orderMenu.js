@@ -5,8 +5,8 @@ class OrderMenu extends Sequelize.Model {
     OrderMenu.init(
       {
         orderId: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
+          type: Sequelize.INTEGER,
+          allowNull: false,
         },
         menuId: {
           type: Sequelize.INTEGER,
@@ -31,9 +31,13 @@ class OrderMenu extends Sequelize.Model {
   }
 
   static associate(db) {
-    db.OrderMenu.hasOne(db.Menu, { foreignKey: 'menuId', targetKey: 'id' });
-    db.Menu.belongsTo(db.OrderMenu, { foreignKey: 'id', targetKey: 'menuId' });
-    db.OrderMenu.belongsTo(db.Order, { foreignKey: 'orderId', targetKey: 'id' });
+    // db.OrderMenu.hasOne(db.Menu, { foreignKey: 'menuId', targetKey: 'id' });
+    db.OrderMenu.belongsTo(db.Menu, { foreignKey: 'menuId', targetKey: 'id' });
+    // db.Menu.belongsTo(db.OrderMenu, { foreignKey: 'id', targetKey: 'menuId' });
+    db.OrderMenu.belongsTo(db.Order, {
+      foreignKey: 'orderId',
+      targetKey: 'id',
+    });
   }
 }
 

@@ -24,14 +24,15 @@ class OrdersController {
       menuIdList,
       countList
     );
-    let response = createOrderData.split('@');
-    return res.status(response[0]).json({ result: response[1] });
+    return res
+      .status(createOrderData.status)
+      .json({ result: createOrderData.message });
   };
 
   //주문 취소
   deleteOrder = async (req, res, next) => {
     const userId = res.locals.user;
-    const { orderId } = req.params;
+    const { storeId, orderId } = req.params;
 
     const deleteOrderData = await this.orderService.deleteOrder(
       userId,
@@ -39,8 +40,9 @@ class OrdersController {
       orderId
     );
 
-    let response = deleteOrderData.split('@');
-    return res.status(response[0]).json({ result: response[1] });
+    return res
+      .status(deleteOrderData.status)
+      .json({ result: deleteOrderData.message });
   };
 
   //업장 별 주문 내역(업주)
@@ -50,8 +52,14 @@ class OrdersController {
 
     const getOrderData = await this.orderService.getOrder(userId, storeId);
 
-    let response = getOrderData.split('@');
-    return res.status(response[0]).json({ result: response[1] });
+    if (getOrderData.status == 200) {
+      return res
+        .status(getOrderData.status)
+        .json({ result: getOrderData.getOrderData });
+    }
+    return res
+      .status(getOrderData.status)
+      .json({ result: getOrderData.message });
   };
 
   //배달 완료
@@ -66,8 +74,9 @@ class OrdersController {
       orderId
     );
 
-    let response = completeOrderData.split('@');
-    return res.status(response[0]).json({ result: response[1] });
+    return res
+      .status(completeOrderData.status)
+      .json({ result: completeOrderData.message });
   };
 }
 
