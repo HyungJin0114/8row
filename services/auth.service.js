@@ -73,12 +73,14 @@ class AuthService {
 
   checkRegistered = async (email, password) => {
     const user = await this.authRepo.findByEmail(email);
+    console.log(user);
 
     if (!user) {
       return false;
     }
 
     const match = bcrypt.compareSync(password, user.password);
+    console.log(match);
     if (!match) {
       return false;
     }
