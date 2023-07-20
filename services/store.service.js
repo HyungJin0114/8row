@@ -5,9 +5,10 @@ class StoreService {
 
     //업체 등록
     createStore =
-        async (name, storePhoneNumber, category, location, image, image, sales) => {
+        async (ownerId, name, storePhoneNumber, category, location, image, sales) => {
             try {
                 await this.stroeRepository.createStore(
+                    ownerId,
                     name,
                     storePhoneNumber,
                     category,
@@ -15,20 +16,21 @@ class StoreService {
                     image,
                     sales
                 );
-                return `200@"massage": "업체 등록에 성공했습니다."`;
+                return { status: 200, message: '업체등록이 완료되었습니다.' };
             } catch (error) {
-                return `400@"massage": "업체 등록에 실패했습니다."`;
+                console.log(error,"err");
+                return { status: 400, message: '업체등록에 실패했습니다.' };
             }
         };
 
     //업체 리스트
     getStore = async() =>{
         try{
-            const getStoreData = await this.stroeRepository.getStore();
+            const getStoreData = await this.stroeRepository.getStore(ownerId);
 
-            return `200@${getStoreData}`;
+            return { status: 200, getStoreData };
         }catch(error){
-            return `400@"massage": "업체리스트 불러오기에 실패했습니다."`;
+            return { status: 400, message: '업체리스트 불러오기에 실패했습니다.' };
         }
     };
 
@@ -36,10 +38,10 @@ class StoreService {
     getStoreDetail = async(ownerId) => {
         try{
             const getStoreDetailDate = await this.stroeRepository.getStoreDetail(ownerId);
-            return `200@${getStoreDetailDate}`;
+            return { status: 200, getStoreDetailDate };
 
         }catch (error) {
-            return `400@"massage": "업체 불러오기에 실패했습니다."`;
+            return { status: 400, message: '업체 불러오기에 실패했습니다.' };
         }
     };
     //업체 수정
@@ -48,9 +50,9 @@ class StoreService {
         try{
 
             await this.stroeRepository.updateStore(ownerId,storeId);
-            return `200@"massage": "업체 수정 완료되었습니다."`;
+            return { status: 200, message: '업체 수정이 완료되었습니다.' };
         }catch (error) {
-            return `400@"massage": "업체 수정 실패했습니다."`;
+            return { status: 400, message: '업체 수정이 실패했습니다.' };
         }
     }
 
@@ -59,13 +61,15 @@ class StoreService {
         try{
 
             await this.stroeRepository.deleteStore(ownerId);
-            return `200@"massage": "업체 삭제 완료되었습니다."`;
+            return { status: 200, message: '업체 삭제가 완료되었습니다.' };
         }catch (error) {
-            return `400@"massage": "업체 삭제 실패하였습니다."`;
+            return { status: 200, message: '업체 삭제가 실패하였습니다.' };
         }
     }
+
+
 }
 
-module.exports = PostService;
+module.exports = StoreService;
 
 

@@ -16,14 +16,42 @@ class StoreRepository {
         const deleteStoreData = await Store.destroy({
             where: { ownerId ,storeId},
         });
-    }
+
+        return deleteStoreData;
+    };
 
     //업체수정
+    updateStore = async (ownerId, storeId) => {
+        const updateStoreData = await Review.update(
+            {content},
+            {where : {ownerId, storeId }}
+        );
+
+        return updateStoreData;
+    };
 
     //업체리스트
+    getStore = async ownerId => {
+        const getStoreData = await Store.findAll({
+            attributes: ['name','location','category','storePhoneNumber','image'],
+            include: [
+                {
+                    model: Store,
+                    attributes: ['name'],
+                },
+            ],
+            where: {ownerId},
+        });
+        return getStoreData;
+    }
 
     //업체상세보기
+    getStoreDetail = async ownerId => {
+        const getStoreDetailData = await Store.findOne({ where : {ownerId}});
+
+        return getStoreDetailData;
+    }
 }
 
 
-module.exports = StoreController;
+module.exports = StoreRepository;
