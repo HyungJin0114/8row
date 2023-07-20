@@ -8,7 +8,7 @@ class ReviewRepository {
       content,
       rating,
       storeId,
-      orderId,
+      orderId
     });
 
     return postReviewsData;

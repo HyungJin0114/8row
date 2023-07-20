@@ -15,7 +15,7 @@ class StoreService {
                     image,
                     sales
                 );
-                return `200@"massage": "${this.createStore}업체 등록에 성공했습니다."`;
+                return `200@"massage": "업체 등록에 성공했습니다."`;
             } catch (error) {
                 return `400@"massage": "업체 등록에 실패했습니다."`;
             }
@@ -42,11 +42,12 @@ class StoreService {
             return `400@"massage": "업체 불러오기에 실패했습니다."`;
         }
     };
-
     //업체 수정
-    updateStore = async(ownerId) => {
+    updateStore = 
+        async(ownerId, storeId) => {
         try{
-            await this.stroeRepository.updateStore(ownerId);
+
+            await this.stroeRepository.updateStore(ownerId,storeId);
             return `200@"massage": "업체 수정 완료되었습니다."`;
         }catch (error) {
             return `400@"massage": "업체 수정 실패했습니다."`;
@@ -56,6 +57,7 @@ class StoreService {
     //업체 삭제
     deleteStore = async (ownerId) => {
         try{
+
             await this.stroeRepository.deleteStore(ownerId);
             return `200@"massage": "업체 삭제 완료되었습니다."`;
         }catch (error) {
@@ -65,3 +67,5 @@ class StoreService {
 }
 
 module.exports = PostService;
+
+
