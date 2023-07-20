@@ -3,6 +3,7 @@ const User = require('../models/user');
 class AuthRepo {
   findByEmail = async email => {
     try {
+      console.log(email);
       const existEmail = await User.findOne({ where: { email: email } });
       if (!existEmail) {
         return null;
@@ -33,7 +34,7 @@ class AuthRepo {
     }
   };
 
-  createUser = async (userInfoInJson) => {
+  createUser = async userInfoInJson => {
     try {
       await User.create(userInfoInJson);
       return true;
@@ -44,31 +45,31 @@ class AuthRepo {
       return false;
     }
   };
-//   createUser = async (
-//     name,
-//     nickname,
-//     phoneNumber,
-//     email,
-//     password,
-//     location
-//   ) => {
-//     try {
-//       await User.create({
-//         name,
-//         nickname,
-//         phoneNumber,
-//         email,
-//         password,
-//         location,
-//       });
-//       return true;
-//     } catch (err) {
-//       console.error(`Error path: ${__dirname}${__filename}`);
-//       console.error(err);
+  //   createUser = async (
+  //     name,
+  //     nickname,
+  //     phoneNumber,
+  //     email,
+  //     password,
+  //     location
+  //   ) => {
+  //     try {
+  //       await User.create({
+  //         name,
+  //         nickname,
+  //         phoneNumber,
+  //         email,
+  //         password,
+  //         location,
+  //       });
+  //       return true;
+  //     } catch (err) {
+  //       console.error(`Error path: ${__dirname}${__filename}`);
+  //       console.error(err);
 
-//       return false;
-//     }
-//   };
+  //       return false;
+  //     }
+  //   };
 }
 
 module.exports = AuthRepo;
