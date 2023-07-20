@@ -17,8 +17,9 @@ class ReviewsController {
       orderId
     );
 
-    let response = postReviewsData.split('@');
-    return res.status(response[0]).json({ result: response[1] });
+    return res
+      .status(postReviewsData.status)
+      .json({ result: postReviewsData.message });
   };
 
   //리뷰 삭제
@@ -26,34 +27,40 @@ class ReviewsController {
     const userId = res.locals.user;
     const { reviewId } = req.params;
 
-    const deleteReviews = await this.reviewService.deleteReviews(
+    const deleteReviewsData = await this.reviewService.deleteReviews(
       userId,
       reviewId
     );
 
-    let response = deleteReviews.split('@');
-    return res.status(response[0]).json({ result: response[1] });
+    return res
+      .status(deleteReviewsData.status)
+      .json({ result: deleteReviewsData.message });
   };
 
   //리뷰 수정
   updateReviews = async (req, res, next) => {
     const userId = res.locals.user;
     const { reviewId } = req.params;
+    const { content, rating } = req.body;
 
     const updateReviewsData = await this.reviewService.updateReviews(
       userId,
-      reviewId
+      reviewId,
+      content,
+      rating
     );
 
-    let response = updateReviewsData.split('@');
-    return res.status(response[0]).json({ result: response[1] });
+    return res
+      .status(updateReviewsData.status)
+      .json({ result: updateReviewsData.message });
   };
 
-  //리뷰 리스트
+  //리뷰 리스트(업장)
   getReviews = async (req, res, next) => {
+    const userId = res.locals.user;
     const { storeId } = req.params;
 
-    const getReviewsData = await this.reviewService.getReviews(storeId);
+    const getReviewsData = await this.reviewService.getReviews(userId, storeId);
 
     if (getReviewsData.status == 200) {
       return res

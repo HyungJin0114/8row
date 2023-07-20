@@ -1,4 +1,4 @@
-const { User, Review } = require('../models');
+const { User, Review, Store } = require('../models');
 
 class ReviewRepository {
   //리뷰 등록
@@ -14,29 +14,48 @@ class ReviewRepository {
     return postReviewsData;
   };
 
+  //리뷰 권한 확인
+  compareReviews = async reviewId => {
+    const compareReviewsData = await Review.findOne({
+      attributes: ['userId'],
+      where: { id: reviewId },
+    });
+    return compareReviewsData;
+  };
+
   //리뷰 삭제
-  deleteReviews = async (userId, reviewId) => {
+  deleteReviews = async reviewId => {
     const deleteReviewsData = await Review.destroy({
-      where: { userId, reviewId },
+      where: { id: reviewId },
     });
 
     return deleteReviewsData;
   };
 
   //리뷰 수정
-  updateReviews = async (userId, reviewId) => {
+  updateReviews = async (reviewId, content, rating) => {
     const updateReviewsData = await Review.update(
       { content, rating },
-      { where: { userId, reviewId } }
+      { where: { id: reviewId } }
     );
 
     return updateReviewsData;
   };
 
-  //리뷰 리스트
+  //리뷰 리스트(업장) 권한 확인
+  compareReviewsList = async storeId => {
+    const compareReviewsListData = await Store.findOne({
+      attributes: ['ownerId'],
+      where: { id: storeId },
+    });
+
+    return compareReviewsListData;
+  };
+
+  //리뷰 리스트(업장)
   getReviews = async storeId => {
     const getReviewsData = await Review.findAll({
-      attributes: ['content', 'rating'],
+      attributes: ['id', 'content', 'rating'],
       include: [
         {
           model: User,
