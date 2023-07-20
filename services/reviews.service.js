@@ -14,43 +14,66 @@ class ReviewService {
         orderId
       );
 
-      return `200@"massage": "등록이 완료되었습니다."`;
+      return { status: 200, message: '등록이 완료되었습니다.' };
     } catch (error) {
       console.log(error);
-      return `400@"massage": "리뷰 등록에 실패했습니다."`;
+      return { status: 400, message: '리뷰 등록에 실패했습니다.' };
     }
   };
 
   //리뷰 삭제
   deleteReviews = async (userId, reviewId) => {
     try {
+      const compareReviewsData = await this.reviewRepository.compareReviews(
+        reviewId
+      );
+      if (compareReviewsData.userId !== userId) {
+        return { status: 400, message: '삭제 권한이 없습니다.' };
+      }
       await this.reviewRepository.deleteReviews(userId, reviewId);
 
-      return `200@"massage": "삭제가 완료되었습니다."`;
+      return { status: 200, message: '삭제가 완료되었습니다.' };
     } catch (error) {
-      return `400@"massage": "리뷰 삭제에 실패했습니다."`;
+      return { status: 400, message: '리뷰 삭제에 실패했습니다..' };
     }
   };
 
   //리뷰 수정
-  updateReviews = async (userId, reviewId) => {
+  updateReviews = async (userId, reviewId, content, rating) => {
     try {
-      await this.reviewRepository.updateReviews(userId, reviewId);
-
-      return `200@"massage": "수정이 완료되었습니다."`;
+      const compareReviewsData = await this.reviewRepository.compareReviews(
+        reviewId
+      );
+      if (compareReviewsData.userId !== userId) {
+        return { status: 400, message: '수정 권한이 없습니다.' };
+      }
+      await this.reviewRepository.updateReviews(
+        userId,
+        reviewId,
+        content,
+        rating
+      );
+      return { status: 200, message: '수정이 완료되었습니다.' };
     } catch (error) {
-      return `400@"massage": "리뷰 수정에 실패했습니다."`;
+      return { status: 400, message: '리뷰 수정에 실패했습니다..' };
     }
   };
 
   //리뷰 리스트
-  getReviews = async storeId => {
+  getReviews = async (userId, storeId) => {
     try {
+      const compareReviewsListData =
+        await this.reviewRepository.compareReviewsList(storeId);
+      console.log(compareReviewsListData.ownerId);
+      console.log(userId);
+      if (compareReviewsListData.ownerId !== userId) {
+        return { status: 400, message: '열람 권한이 없습니다.' };
+      }
       const getReviewsData = await this.reviewRepository.getReviews(storeId);
 
-      return `200@${getReviewsData}`;
+      return { status: 200, getReviewsData };
     } catch (error) {
-      return `400@"massage": "리뷰 리스트 불러오기에 실패했습니다."`;
+      return { status: 400, message: '리뷰 리스트 불러오기에 실패했습니다.' };
     }
   };
 }
