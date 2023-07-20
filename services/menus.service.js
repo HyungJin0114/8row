@@ -45,6 +45,22 @@ class MenuService {
       return false;
     }
   };
+
+  getMenu = async storeId => {
+    try {
+      const menu = await this.menuRepo.getMenu(storeId);
+      if (!menu) {
+        return null;
+      }
+
+      return menu;
+    } catch (err) {
+      console.error(`Error path: ${__dirname}${__filename}`);
+      console.error(err);
+
+      return null;
+    }
+  };
 }
 
 module.exports = MenuService;
