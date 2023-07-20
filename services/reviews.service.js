@@ -16,6 +16,7 @@ class ReviewService {
 
       return `200@"massage": "등록이 완료되었습니다."`;
     } catch (error) {
+      console.log(error);
       return `400@"massage": "리뷰 등록에 실패했습니다."`;
     }
   };

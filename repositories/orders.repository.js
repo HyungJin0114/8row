@@ -1,10 +1,10 @@
-const { Order, OrderMenu, User, Store, Menu } = require('../models');
+const { Order, OrderMenu, User, Store, Menu, sequelize } = require('../models');
 
 class OrderRepository {
   //업장 존재 여부 확인
   checkStore = async storeId => {
     const checkStoreData = await Store.findOne({
-      where: { storeId },
+      where: { id: storeId },
     });
 
     return checkStoreData;
@@ -36,15 +36,17 @@ class OrderRepository {
 
   //유저 포인트 확인
   checkUserPoint = async (userId, t) => {
-    const point = await User.findOne(
+    const { point } = await User.findOne(
       {
         attributes: ['point'],
-        where: { userId },
+        where: { id: userId },
         raw: true,
         nest: true,
       },
       { transaction: t }
     );
+
+    return point;
   };
 
   //주문 하위 유저 포인트 변경
@@ -52,7 +54,7 @@ class OrderRepository {
     const updateUserPointData = await User.update(
       { point },
       {
-        where: { userId },
+        where: { id: userId },
       },
       { transaction: t }
     );
@@ -65,7 +67,7 @@ class OrderRepository {
     const sales = await Store.findOne(
       {
         attributes: ['sales'],
-        where: { storeId },
+        where: { id: storeId },
         raw: true,
         nest: true,
       },
@@ -80,7 +82,7 @@ class OrderRepository {
     const updateStoreSalesData = await Store.update(
       { sales },
       {
-        where: { storeId },
+        where: { id: storeId },
       },
       { transaction: t }
     );
@@ -92,7 +94,7 @@ class OrderRepository {
   compareOwner = async storeId => {
     const compareOwnerData = await Store.findOne({
       attributes: ['ownerId'],
-      where: { storeId },
+      where: { id: storeId },
     });
 
     return compareOwnerData;
@@ -101,7 +103,7 @@ class OrderRepository {
   //주문 취소
   deleteOrder = async orderId => {
     const deleteOrderData = await Order.destroy({
-      where: { orderId },
+      where: { id: orderId },
     });
 
     return deleteOrderData;
@@ -118,7 +120,7 @@ class OrderRepository {
           include: [
             {
               model: Menu,
-              attributes: ['price'],
+              attributes: ['menuName', 'price'],
             },
           ],
         },
@@ -135,7 +137,7 @@ class OrderRepository {
     const completeOrderData = await Order.update(
       { delivered },
       {
-        where: { orderId },
+        where: { id: orderId },
       }
     );
 
