@@ -55,8 +55,14 @@ class ReviewsController {
 
     const getReviewsData = await this.reviewService.getReviews(storeId);
 
-    let response = getReviewsData.split('@');
-    return res.status(response[0]).json({ result: response[1] });
+    if (getReviewsData.status == 200) {
+      return res
+        .status(getReviewsData.status)
+        .json({ result: getReviewsData.getReviewsData });
+    }
+    return res
+      .status(getReviewsData.status)
+      .json({ result: getReviewsData.message });
   };
 }
 

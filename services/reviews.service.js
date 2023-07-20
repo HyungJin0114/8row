@@ -48,9 +48,9 @@ class ReviewService {
     try {
       const getReviewsData = await this.reviewRepository.getReviews(storeId);
 
-      return `200@${getReviewsData}`;
+      return { status: 200, getReviewsData };
     } catch (error) {
-      return `400@"massage": "리뷰 리스트 불러오기에 실패했습니다."`;
+      return { status: 400, message: '리뷰 리스트 불러오기에 실패했습니다.' };
     }
   };
 }
