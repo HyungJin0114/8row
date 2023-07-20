@@ -5,20 +5,20 @@ class Menu extends Sequelize.Model {
     Menu.init(
       {
         menuName: {
-            type: Sequelize.STRING(30),
-            allowNull: false
+          type: Sequelize.STRING(30),
+          allowNull: false,
         },
         storeId: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
+          type: Sequelize.INTEGER,
+          allowNull: false,
         },
         price: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
+          type: Sequelize.INTEGER,
+          allowNull: false,
         },
         image: {
-            type: Sequelize.STRING(255),
-            allowNull: true
+          type: Sequelize.STRING(255),
+          allowNull: true,
         },
       },
       {
@@ -36,8 +36,9 @@ class Menu extends Sequelize.Model {
 
   static associate(db) {
     db.Menu.belongsTo(db.Store, { foreignKey: 'storeId', targetKey: 'id' });
-    db.OrderMenu.belongsTo(db.Menu, {foreignKey: 'menuId', targetKey: 'id'})
-    db.Menu.hasOne(db.OrderMenu, {foreignKey: 'id', targetKey: 'menuId'})
+    db.Menu.hasMany(db.OrderMenu, { foreignKey: 'menuId', sourceKey: 'id' });
+    // db.OrderMenu.belongsTo(db.Menu, {foreignKey: 'menuId', targetKey: 'id'})
+    // db.Menu.hasOne(db.OrderMenu, {foreignKey: 'id', targetKey: 'menuId'})
   }
 }
 
