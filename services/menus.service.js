@@ -12,6 +12,14 @@ class MenuService {
       filePaths.push(files[file][0].path);
     }
 
+    // 입력이 하나일 경우 배열이 아니라 문자열로 들어옴
+    if (typeof menuName === 'string') {
+      menuName = [menuName];
+    }
+    if (typeof price === 'string') {
+      price = [price];
+    }
+
     for (let i = 0; i < filePaths.length; i++) {
       const obj = {
         storeId: storeId,
