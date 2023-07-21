@@ -21,3 +21,23 @@ exports.createMenu = async (req, res, next) => {
     return false;
   }
 };
+
+exports.getMenu = async (req, res, next) => {
+  const { storeId } = req.params;
+
+  try {
+    const menu = await menuService.getMenu(storeId); //load menu;
+    if (!menu) {
+      res.status(200).json({ message: '메뉴가 존재하지 않습니다.' });
+    }
+
+    return res.status(200).json({ result: menu });
+  } catch (err) {
+    console.error(`Error path: ${__dirname}${__filename}`);
+    console.error(err);
+
+    return res
+      .status(404)
+      .json({ message: '메뉴를 불러오는 중에 문제가 발생하였습니다.' });
+  }
+};
