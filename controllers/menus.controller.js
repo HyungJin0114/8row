@@ -52,6 +52,11 @@ exports.updateMenu = async (req, res, next) => {
   const { menuName, price, image } = req.body;
 
   try {
+    const owner = await menuService.isOwner(res.locals.user, storeId);
+    if (!owner) {
+      return res.status(401).json({ message: '권한이 없는 사용자입니다.' });
+    }
+
     const result = await menuService.updateMenu(
       menuId,
       storeId,
@@ -73,10 +78,14 @@ exports.updateMenu = async (req, res, next) => {
 };
 
 exports.deleteMenu = async (req, res, next) => {
-  const { menuId } = req.params;
+  const { storeId, menuId } = req.params;
   // 안전 장치로써 storeId도 DB에서 확인하도록 하는 것이 좋을까..?
 
   try {
+    const owner = await menuService.isOwner(res.locals.user, storeId);
+    if (!owner) {
+      return res.status(401).json({ message: '권한이 없는 사용자입니다.' });
+    }
     const result = await menuService.deleteMenu(menuId);
 
     if (!result) {

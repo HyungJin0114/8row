@@ -4,7 +4,6 @@ class MenuService {
   menuRepo = new MenuRepo();
 
   createMenu = async (storeId, menuName, price, files) => {
-    console.log('service - createMenu!');
     const filePaths = [];
     const arrObj = [];
     // 데이터 예시{storeId: 12, menuName: '123', price: 123, image: imgPath}
