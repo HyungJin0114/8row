@@ -1,5 +1,5 @@
 const Menu = require('../models/menu');
-const Store = require("../models/store");
+const Store = require('../models/store');
 
 class MenuRepo {
   createMenu = async menuObjArray => {
@@ -88,7 +88,7 @@ class MenuRepo {
 
       //   console.log(`delete result: ${result}`);
 
-      if (!result[0]) {
+      if (!result) {
         return false;
       }
 
@@ -102,28 +102,30 @@ class MenuRepo {
   };
 
   getOwner = async (userId, storeId) => {
-    if (typeof userId !== "number") {
-        userId = Number(userId);
+    if (typeof userId !== 'number') {
+      userId = Number(userId);
     }
-    if (typeof storeId !== "number") {
-        storeId = Number(storeId);
+    if (typeof storeId !== 'number') {
+      storeId = Number(storeId);
     }
 
     try {
-        const user = await Store.findOne({where: {ownerId: userId, id: storeId}})
+      const user = await Store.findOne({
+        where: { ownerId: userId, id: storeId },
+      });
 
-        if (!user) {
-            return false;
-        }
-
-        return true;
-    } catch (err) {
-        console.error(`Error path: ${__dirname}${__filename}`);
-        console.error(err);
-
+      if (!user) {
         return false;
+      }
+
+      return true;
+    } catch (err) {
+      console.error(`Error path: ${__dirname}${__filename}`);
+      console.error(err);
+
+      return false;
     }
-  }
+  };
 }
 
 module.exports = MenuRepo;
