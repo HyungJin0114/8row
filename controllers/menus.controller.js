@@ -13,7 +13,7 @@ exports.createMenu = async (req, res, next) => {
   try {
     await menuService.createMenu(storeId, menuName, price, files);
 
-    return true;
+    return res.status(200).json('생성을 성공했습니다.');
   } catch (err) {
     console.error(`Error path: ${__dirname}${__filename}`);
     console.error(err);
@@ -28,7 +28,7 @@ exports.getMenu = async (req, res, next) => {
   try {
     const menu = await menuService.getMenu(storeId); //load menu;
     if (!menu) {
-      res.status(200).json({ message: '메뉴가 존재하지 않습니다.' });
+      return res.status(200).json({ message: '메뉴가 존재하지 않습니다.' });
     }
 
     return res.status(200).json({ result: menu });
