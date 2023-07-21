@@ -24,7 +24,7 @@ class StoreRepository {
   //삭제 권환 확인
   compareStore = async storeId => {
     const compareStoreData = await Store.findOne({
-      //attributes: ['ownerId'],
+      attributes: ['ownerId'],
       where: { id: storeId },
     });
     return compareStoreData;
@@ -40,6 +40,7 @@ class StoreRepository {
 
   //업체수정
   updateStore = async (
+    userId,
     storeId,
     name,
     storePhoneNumber,
@@ -58,6 +59,7 @@ class StoreRepository {
   getStore = async () => {
     const getStoreData = await Store.findAll({
       attributes: [
+        'id',
         'name',
         'ownerId',
         'location',
@@ -70,10 +72,16 @@ class StoreRepository {
     return getStoreData;
   };
 
+  getStoreByUserId = async ownerId => {
+    const store = await Store.findOne({ where: { ownerId } });
+    return store;
+  };
+
   //업체상세보기
   getStoreDetail = async storeId => {
     console.log(storeId, 'rep');
     const getStoreDetailData = await Store.findOne({ where: { id: storeId } });
+
     return getStoreDetailData;
   };
 }
