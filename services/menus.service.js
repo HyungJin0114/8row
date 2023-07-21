@@ -61,6 +61,29 @@ class MenuService {
       return null;
     }
   };
+
+  updateMenu = async (menuId, storeId, menuName, price, image) => {
+    try {
+      const result = await this.menuRepo.updateMenu(
+        menuId,
+        storeId,
+        menuName,
+        price,
+        image
+      );
+      console.log(result);
+      if (!result) {
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      console.error(`Error path: ${__dirname}${__filename}`);
+      console.error(err);
+
+      return false;
+    }
+  };
 }
 
 module.exports = MenuService;
