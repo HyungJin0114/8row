@@ -11,6 +11,10 @@ exports.createMenu = async (req, res, next) => {
   //   console.log(`menuName: ${menuName}`);
   //   console.log(`price: ${price}`);
   try {
+    const owner = await menuService.isOwner(res.locals.user, storeId);
+    if (!owner) {
+      return res.status(401).json({ message: '권한이 없는 사용자입니다.' });
+    }
     await menuService.createMenu(storeId, menuName, price, files);
 
     return res.status(200).json('생성을 성공했습니다.');
@@ -18,7 +22,7 @@ exports.createMenu = async (req, res, next) => {
     console.error(`Error path: ${__dirname}${__filename}`);
     console.error(err);
 
-    return false;
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
