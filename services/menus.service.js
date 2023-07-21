@@ -101,6 +101,23 @@ class MenuService {
       return false;
     }
   };
+
+  isOwner = async (userId, storeId) => {
+    try {
+      const result = await this.menuRepo.getOwner(userId, storeId);
+
+      if (!result) {
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      console.error(`Error path: ${__dirname}${__filename}`);
+      console.error(err);
+
+      return false;
+    }
+  };
 }
 
 module.exports = MenuService;
