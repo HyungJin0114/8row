@@ -1,4 +1,4 @@
-const { Order, OrderMenu, User, Store, Menu, sequelize } = require('../models');
+const { Order, OrderMenu, User, Store, Menu } = require('../models');
 
 class OrderRepository {
   //업장 존재 여부 확인

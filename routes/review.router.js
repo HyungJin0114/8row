@@ -17,11 +17,6 @@ router.patch(
   isSignedIn,
   reviewsController.updateReviews
 );
-router.get(
-  '/:storeId/reviews',
-  isSignedIn,
-  isAdmin,
-  reviewsController.getReviews
-);
+router.get('/:storeId/reviews', isSignedIn, reviewsController.getReviews);
 
 module.exports = router;

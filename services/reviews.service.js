@@ -62,13 +62,6 @@ class ReviewService {
   //리뷰 리스트
   getReviews = async (userId, storeId) => {
     try {
-      const compareReviewsListData =
-        await this.reviewRepository.compareReviewsList(storeId);
-      console.log(compareReviewsListData.ownerId);
-      console.log(userId);
-      if (compareReviewsListData.ownerId !== userId) {
-        return { status: 400, message: '열람 권한이 없습니다.' };
-      }
       const getReviewsData = await this.reviewRepository.getReviews(storeId);
 
       return { status: 200, getReviewsData };
