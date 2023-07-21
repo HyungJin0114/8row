@@ -6,15 +6,15 @@ class StoreController {
   // 업체 등록
   createStore = async (req, res, next) => {
     const userId = res.locals.user;
-    const { name, storePhoneNumber, category, location, files } = req.body;
-    const files = req.files;
+    const image = req.file;
+    const { name, storePhoneNumber, category, location } = req.body;
 
     const createStoreData = await this.storeService.createStore(
       name,
       storePhoneNumber,
       category,
       location,
-      files,
+      image.path,
       userId
     );
     return res
@@ -33,8 +33,9 @@ class StoreController {
   //업체 수정
   updateStore = async (req, res, next) => {
     const userId = res.locals.user;
+    const image = req.file;
     const { storeId } = req.params;
-    const { name, storePhoneNumber, category, location, image } = req.body;
+    const { name, storePhoneNumber, category, location } = req.body;
 
     const updateStoreData = await this.storeService.updateStore(
       userId,
@@ -43,8 +44,9 @@ class StoreController {
       storePhoneNumber,
       category,
       location,
-      image
+      image.path
     );
+    console.log(updateStoreData);
     return res
       .status(updateStoreData.status)
       .json({ result: updateStoreData.message });

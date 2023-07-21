@@ -4,12 +4,19 @@ class MenuService {
   menuRepo = new MenuRepo();
 
   createMenu = async (storeId, menuName, price, files) => {
-    console.log('service - createMenu!');
     const filePaths = [];
     const arrObj = [];
     // 데이터 예시{storeId: 12, menuName: '123', price: 123, image: imgPath}
     for (const file in files) {
       filePaths.push(files[file][0].path);
+    }
+
+    // 입력이 하나일 경우 배열이 아니라 문자열로 들어옴
+    if (typeof menuName === 'string') {
+      menuName = [menuName];
+    }
+    if (typeof price === 'string') {
+      price = [price];
     }
 
     for (let i = 0; i < filePaths.length; i++) {
@@ -88,6 +95,23 @@ class MenuService {
   deleteMenu = async menuId => {
     try {
       const result = await this.menuRepo.deleteMenu(menuId);
+
+      if (!result) {
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      console.error(`Error path: ${__dirname}${__filename}`);
+      console.error(err);
+
+      return false;
+    }
+  };
+
+  isOwner = async (userId, storeId) => {
+    try {
+      const result = await this.menuRepo.getOwner(userId, storeId);
 
       if (!result) {
         return false;

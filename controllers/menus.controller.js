@@ -11,14 +11,18 @@ exports.createMenu = async (req, res, next) => {
   //   console.log(`menuName: ${menuName}`);
   //   console.log(`price: ${price}`);
   try {
+    const owner = await menuService.isOwner(res.locals.user, storeId);
+    if (!owner) {
+      return res.status(401).json({ message: '권한이 없는 사용자입니다.' });
+    }
     await menuService.createMenu(storeId, menuName, price, files);
 
-    return true;
+    return res.status(200).json('생성을 성공했습니다.');
   } catch (err) {
     console.error(`Error path: ${__dirname}${__filename}`);
     console.error(err);
 
-    return false;
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -28,7 +32,7 @@ exports.getMenu = async (req, res, next) => {
   try {
     const menu = await menuService.getMenu(storeId); //load menu;
     if (!menu) {
-      res.status(200).json({ message: '메뉴가 존재하지 않습니다.' });
+      return res.status(200).json({ message: '메뉴가 존재하지 않습니다.' });
     }
 
     return res.status(200).json({ result: menu });
@@ -48,6 +52,11 @@ exports.updateMenu = async (req, res, next) => {
   const { menuName, price, image } = req.body;
 
   try {
+    const owner = await menuService.isOwner(res.locals.user, storeId);
+    if (!owner) {
+      return res.status(401).json({ message: '권한이 없는 사용자입니다.' });
+    }
+
     const result = await menuService.updateMenu(
       menuId,
       storeId,
@@ -69,10 +78,14 @@ exports.updateMenu = async (req, res, next) => {
 };
 
 exports.deleteMenu = async (req, res, next) => {
-  const { menuId } = req.params;
+  const { storeId, menuId } = req.params;
   // 안전 장치로써 storeId도 DB에서 확인하도록 하는 것이 좋을까..?
 
   try {
+    const owner = await menuService.isOwner(res.locals.user, storeId);
+    if (!owner) {
+      return res.status(401).json({ message: '권한이 없는 사용자입니다.' });
+    }
     const result = await menuService.deleteMenu(menuId);
 
     if (!result) {
