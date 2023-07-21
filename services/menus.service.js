@@ -84,6 +84,23 @@ class MenuService {
       return false;
     }
   };
+
+  deleteMenu = async menuId => {
+    try {
+      const result = await this.menuRepo.deleteMenu(menuId);
+
+      if (!result) {
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      console.error(`Error path: ${__dirname}${__filename}`);
+      console.error(err);
+
+      return false;
+    }
+  };
 }
 
 module.exports = MenuService;
