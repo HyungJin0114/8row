@@ -58,6 +58,7 @@ class StoreRepository {
   getStore = async () => {
     const getStoreData = await Store.findAll({
       attributes: [
+        'id',
         'name',
         'ownerId',
         'location',
@@ -70,11 +71,16 @@ class StoreRepository {
     return getStoreData;
   };
 
+  getStoreByUserId = async ownerId => {
+    console.log('aaaaaaaaaaaaa', ownerId);
+    const store = await Store.findOne({ ownerId });
+    return store;
+  };
+
   //업체상세보기
   getStoreDetail = async storeId => {
     console.log(storeId, 'rep');
     const getStoreDetailData = await Store.findOne({ where: { id: storeId } });
-
     return getStoreDetailData;
   };
 }

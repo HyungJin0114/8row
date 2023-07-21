@@ -13,7 +13,7 @@ exports.createMenu = async (req, res, next) => {
   try {
     await menuService.createMenu(storeId, menuName, price, files);
 
-    return true;
+    return res.status(200).json('생성을 성공했습니다.');
   } catch (err) {
     console.error(`Error path: ${__dirname}${__filename}`);
     console.error(err);
