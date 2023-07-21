@@ -28,7 +28,7 @@ exports.getMenu = async (req, res, next) => {
   try {
     const menu = await menuService.getMenu(storeId); //load menu;
     if (!menu) {
-      res.status(200).json({ message: '메뉴가 존재하지 않습니다.' });
+      return res.status(200).json({ message: '메뉴가 존재하지 않습니다.' });
     }
 
     return res.status(200).json({ result: menu });
