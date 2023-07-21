@@ -51,17 +51,41 @@ class MenuRepo {
       price = Number(price);
     }
     try {
-        // result 결과가 배열로 나옴
+      // result 결과가 배열로 나옴
       const result = await Menu.update(
         { menuName, price },
         { where: { id: menuId } }
       );
 
-      console.log(`update result: ${result}`);
+      //   console.log(`update result: ${result}`);
       //   await Menu.update(
       //     { menuName, price },
       //     { where: { [Op.and]: [{ storeId }, { menuName }] } }
       //   );
+
+      if (!result[0]) {
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      console.error(`Error path: ${__dirname}${__filename}`);
+      console.error(err);
+
+      return false;
+    }
+  };
+
+  deleteMenu = async menuId => {
+    if (typeof menuId !== 'number') {
+      menuId = Number(menuId);
+    }
+
+    try {
+      // result 결과가 배열로 나옴
+      const result = await Menu.destroy({ where: { id: menuId } });
+
+      //   console.log(`delete result: ${result}`);
 
       if (!result[0]) {
         return false;
