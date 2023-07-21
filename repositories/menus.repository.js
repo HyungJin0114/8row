@@ -88,7 +88,7 @@ class MenuRepo {
 
       //   console.log(`delete result: ${result}`);
 
-      if (!result[0]) {
+      if (!result) {
         return false;
       }
 
