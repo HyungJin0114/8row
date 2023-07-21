@@ -1,42 +1,34 @@
 const StoreService = require('../services/store.service');
 
-
 class StoreController {
   storeService = new StoreService();
 
   // 업체 등록
   createStore = async (req, res, next) => {
     const userId = res.locals.user;
-    const { name,
-      storePhoneNumber,
-      category,
-      location,
-      image } = req.body;
+    const { name, storePhoneNumber, category, location, files } = req.body;
+    const files = req.files;
 
     const createStoreData = await this.storeService.createStore(
       name,
       storePhoneNumber,
       category,
       location,
-      image,
+      files,
       userId
     );
     return res
       .status(createStoreData.status)
       .json({ result: createStoreData.message });
-  }
+  };
 
   // 업체 삭제
   deleteStore = async (req, res, next) => {
     const userId = res.locals.user;
-    const {storeId} = req.params
-    const deleteStore = await this.storeService.deleteStore(
-      userId,storeId
-    );
-    return res
-      .status(deleteStore.status)
-      .json({ result: deleteStore.message });
-  }
+    const { storeId } = req.params;
+    const deleteStore = await this.storeService.deleteStore(userId, storeId);
+    return res.status(deleteStore.status).json({ result: deleteStore.message });
+  };
 
   //업체 수정
   updateStore = async (req, res, next) => {
@@ -56,36 +48,36 @@ class StoreController {
     return res
       .status(updateStoreData.status)
       .json({ result: updateStoreData.message });
-  }
+  };
 
   //업체 전체보기
   getStore = async (req, res, next) => {
     const getStoreData = await this.storeService.getStore();
-    if(getStoreData.status == 200){
+    if (getStoreData.status == 200) {
       return res
-      .status(getStoreData.status)
-      .json({ result: getStoreData.getStoreData });
+        .status(getStoreData.status)
+        .json({ result: getStoreData.getStoreData });
     }
 
     return res
       .status(getStoreData.status)
       .json({ result: getStoreData.message });
-  }
+  };
 
   //업체 상세보기
   getStoreDetail = async (req, res, next) => {
-    const {storeId} = req.params
+    const { storeId } = req.params;
     const getStoreDetailData = await this.storeService.getStoreDetail(storeId);
-    
-    if(getStoreDetailData.status == 200){
+
+    if (getStoreDetailData.status == 200) {
       return res
-      .status(getStoreDetailData.status)
-      .json({ result: getStoreDetailData.getStoreDetailData });
+        .status(getStoreDetailData.status)
+        .json({ result: getStoreDetailData.getStoreDetailData });
     }
     return res
-    .status(getStoreDetailData.status)
-    .json({result: getStoreDetailData.message});
-  }
+      .status(getStoreDetailData.status)
+      .json({ result: getStoreDetailData.message });
+  };
 }
 
 module.exports = StoreController;
