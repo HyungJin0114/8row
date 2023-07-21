@@ -6,7 +6,7 @@ class StoreController {
 
   // 업체 등록
   createStore = async (req, res, next) => {
-    const ownerId = res.locals.user;
+    const userId = res.locals.user;
     const { name,
       storePhoneNumber,
       category,
@@ -19,35 +19,33 @@ class StoreController {
       category,
       location,
       image,
-      ownerId
+      userId
     );
     return res
       .status(createStoreData.status)
-      .json({ result: createStoreData.massage });
+      .json({ result: createStoreData.message });
   }
 
   // 업체 삭제
   deleteStore = async (req, res, next) => {
-    const ownerId = req.locals.user;
-    const { storeId } = req.params;
-
+    const userId = res.locals.user;
+    const {storeId} = req.params
     const deleteStore = await this.storeService.deleteStore(
-      ownerId,
-      storeId
+      userId,storeId
     );
     return res
       .status(deleteStore.status)
-      .json({ result: deleteStore.massage });
+      .json({ result: deleteStore.message });
   }
 
   //업체 수정
   updateStore = async (req, res, next) => {
-    const ownerId = req.locals.user;
+    const userId = res.locals.user;
     const { storeId } = req.params;
     const { name, storePhoneNumber, category, location, image } = req.body;
 
     const updateStoreData = await this.storeService.updateStore(
-      ownerId,
+      userId,
       storeId,
       name,
       storePhoneNumber,
@@ -56,15 +54,19 @@ class StoreController {
       image
     );
     return res
-      .status(updateStoreData)
+      .status(updateStoreData.status)
       .json({ result: updateStoreData.message });
   }
 
   //업체 전체보기
   getStore = async (req, res, next) => {
-    const ownerId = req.locals.user;
+    const getStoreData = await this.storeService.getStore();
+    if(getStoreData.status == 200){
+      return res
+      .status(getStoreData.status)
+      .json({ result: getStoreData.getStoreData });
+    }
 
-    const getStoreData = await this.storeService.getStore(ownerId);
     return res
       .status(getStoreData.status)
       .json({ result: getStoreData.message });
@@ -72,12 +74,17 @@ class StoreController {
 
   //업체 상세보기
   getStoreDetail = async (req, res, next) => {
-    const {ownerId} = req.params;
-
-    const getStoreDetailDate = await this.storeService.getStoreDetail(ownerId);
+    const {storeId} = req.params
+    const getStoreDetailData = await this.storeService.getStoreDetail(storeId);
+    
+    if(getStoreDetailData.status == 200){
+      return res
+      .status(getStoreDetailData.status)
+      .json({ result: getStoreDetailData.getStoreDetailData });
+    }
     return res
-    .status(getStoreDetailDate.status)
-    .json({result: getStoreDetailDate.message});
+    .status(getStoreDetailData.status)
+    .json({result: getStoreDetailData.message});
   }
 }
 

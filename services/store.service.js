@@ -5,16 +5,15 @@ class StoreService {
 
     //업체 등록
     createStore =
-        async (ownerId, name, storePhoneNumber, category, location, image, sales) => {
+        async (name, storePhoneNumber, category, location, image, ownerId) => {
             try {
                 await this.stroeRepository.createStore(
-                    ownerId,
                     name,
                     storePhoneNumber,
                     category,
                     location,
                     image,
-                    sales
+                    ownerId
                 );
                 return { status: 200, message: '업체등록이 완료되었습니다.' };
             } catch (error) {
@@ -26,7 +25,7 @@ class StoreService {
     //업체 리스트
     getStore = async() =>{
         try{
-            const getStoreData = await this.stroeRepository.getStore(ownerId);
+            const getStoreData = await this.stroeRepository.getStore();
             return { status: 200, getStoreData };
         }catch(error){
             return { status: 400, message: '업체리스트 불러오기에 실패했습니다.' };
@@ -34,46 +33,52 @@ class StoreService {
     };
 
     //업체 상세보기
-    getStoreDetail = async(ownerId) => {
+    getStoreDetail = async(storeId) => {
         try{
-            const getStoreDetailDate = await this.stroeRepository.getStoreDetail(ownerId);
-            return { status: 200, getStoreDetailDate };
+            console.log(storeId,"ser1");
+            const getStoreDetailData = await this.stroeRepository.getStoreDetail(storeId);
+            console.log(storeId,"ser2");
+            return { status: 200, getStoreDetailData };
 
         }catch (error) {
+            console.log(error);
             return { status: 400, message: '업체 불러오기에 실패했습니다.' };
         }
     };
     //업체 수정
     updateStore = 
-        async(ownerId, name, storePhoneNumber, category, location, image,sales ) => {
+        async(userId, storeId, name, storePhoneNumber, category, location, image ) => {
         try{
             const compareStoreData = 
-            await this.stroeRepository.updateStore(ownerId);
-            if(compareStoreData.ownerId !== ownerId){
+            await this.stroeRepository.compareStore(storeId);
+            if(compareStoreData.ownerId !== userId){
                 return {staus: 400, massage:'업체 수정 권한이 없습니다.'};
             };
             await this.stroeRepository.updateStore(
-                name, storePhoneNumber, category, location, image, sales
+                userId, storeId, name, storePhoneNumber, category, location, image
             );
             return { status: 200, message: '업체 수정이 완료되었습니다.' };
         }catch (error) {
+            console.log(error);
             return { status: 400, message: '업체 수정이 실패했습니다.' };
         }
     }
 
     //업체 삭제
-    deleteStore = async (ownerId) => {
+    deleteStore = async (userId,storeId) => {
         try{
             const compareStoreData = 
-            await this.stroeRepository.updateStore(ownerId);
-            if(compareStoreData.ownerId !== ownerId){
+            await this.stroeRepository.compareStore(storeId);
+            console.log(compareStoreData.ownerId,"123123");
+
+            if(compareStoreData.ownerId !== userId){
                 return {staus: 400, massage:'삭제 권한이 없습니다.'};
             };
-            await this.stroeRepository.deleteStore(ownerId);
+            await this.stroeRepository.deleteStore(storeId);
 
             return { status: 200, message: '업체 삭제가 완료되었습니다.' };
         }catch (error) {
-            return { status: 200, message: '업체 삭제가 실패하였습니다.' };
+            return { status: 400, message: '업체 삭제가 실패하였습니다.' };
         }
     }
 
