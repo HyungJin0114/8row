@@ -1,10 +1,12 @@
 const AuthService = require('../services/auth.service');
+const UserService = require('../services/user.service');
 const User = require('../models/user');
 const { where } = require('sequelize');
 const StoreRepository = require('../repositories/store.repository');
 
 class UserController {
   authService = new AuthService();
+  userService = new UserService();
   storerepository = new StoreRepository();
 
   getUserInfo = async (req, res, next) => {
@@ -26,9 +28,39 @@ class UserController {
     }
   };
 
-  updateUserInfo = (req, res, next) => {};
+  //내 프로필 수정
+  updateUserInfo = async (req, res, next) => {
+    const userId = res.locals.user;
+    const { name, email, phoneNumber, nickname, location } = req.body;
 
-  getUserOrdered = (req, res, next) => {};
+    const updateUserInfoData = await this.userService.updateUserInfo(
+      userId,
+      name,
+      email,
+      phoneNumber,
+      nickname,
+      location
+    );
+    return res
+      .status(updateUserInfoData.status)
+      .json({ result: updateUserInfoData.message });
+  };
+
+  // 내 주문 내역
+  getUserOrdered = async (req, res, next) => {
+    const userId = res.locals.user;
+
+    const getUserOrderedData = await this.userService.getUserOrdered(userId);
+
+    if (getUserOrderedData.status == 200) {
+      return res
+        .status(getUserOrderedData.status)
+        .json({ result: getUserOrderedData.getUserOrderedData });
+    }
+    return res
+      .status(getUserOrderedData.status)
+      .json({ result: getUserOrderedData.message });
+  };
 }
 
 module.exports = UserController;
