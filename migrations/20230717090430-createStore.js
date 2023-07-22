@@ -25,7 +25,7 @@ module.exports = {
         allowNull: true,
       },
       image: {
-        type: Sequelize.STRING(),
+        type: Sequelize.STRING(1000),
         allowNull: true,
       },
       sales: {
