@@ -49,11 +49,9 @@ class OrderService {
         return { status: 200, message: '주문이 완료되었습니다.' };
       } catch (error) {
         await t.rollback();
-        console.log(error);
         return { status: 400, message: '주문에 실패했습니다.' };
       }
     } catch (error) {
-      console.log(error);
       return { status: 400, message: '주문에 실패했습니다.' };
     }
   };

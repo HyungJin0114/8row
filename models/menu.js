@@ -17,7 +17,7 @@ class Menu extends Sequelize.Model {
           allowNull: false,
         },
         image: {
-          type: Sequelize.STRING(255),
+          type: Sequelize.STRING(),
           allowNull: true,
         },
       },

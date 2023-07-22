@@ -25,7 +25,7 @@ class Store extends Sequelize.Model {
           allowNull: true,
         },
         image: {
-          type: Sequelize.STRING(100),
+          type: Sequelize.STRING(),
           allowNull: true,
         },
         sales: {
@@ -52,7 +52,7 @@ class Store extends Sequelize.Model {
     db.Store.hasMany(db.Order, { foreignKey: 'storeId', sourceKey: 'id' });
     db.Store.hasMany(db.Review, { foreignKey: 'storeId', sourceKey: 'id' });
     db.Store.hasOne(db.User, { foreignKey: 'id', targetKey: 'ownerId' });
-    db.User.belongsTo(db.Store, {foreignKey: 'ownerId', targetKey: 'id'})
+    db.User.belongsTo(db.Store, { foreignKey: 'ownerId', targetKey: 'id' });
   }
 }
 
