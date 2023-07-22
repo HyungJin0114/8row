@@ -15,7 +15,7 @@ router.post(
   '/:storeId/menus',
   isSignedIn,
   isAdmin,
-  upload.fields([{ name: 'image0' }]),
+  upload.single('image'),
   createMenu
 );
 router.put('/:storeId/menus/:menuId', isSignedIn, isAdmin, updateMenu);

@@ -1,11 +1,10 @@
 const Menu = require('../models/menu');
 const Store = require('../models/store');
-
+// menuObjArray
 class MenuRepo {
-  createMenu = async menuObjArray => {
+  createMenu = async (storeId, menuName, price, image) => {
     try {
-      //   await Menu.create({ storeId, menuName, price, image: imgPath });
-      await Menu.bulkCreate(menuObjArray);
+      await Menu.create({ storeId, menuName, price, image });
 
       return true;
     } catch (err) {

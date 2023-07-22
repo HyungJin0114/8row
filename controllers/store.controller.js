@@ -8,13 +8,13 @@ class StoreController {
     const userId = res.locals.user;
     const image = req.file;
     const { name, storePhoneNumber, category, location } = req.body;
-
+    console.log(image);
     const createStoreData = await this.storeService.createStore(
       name,
       storePhoneNumber,
       category,
       location,
-      image.path,
+      image.location,
       userId
     );
     return res
@@ -44,7 +44,7 @@ class StoreController {
       storePhoneNumber,
       category,
       location,
-      image.path
+      image.location
     );
     console.log(updateStoreData);
     return res

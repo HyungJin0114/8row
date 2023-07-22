@@ -2,7 +2,7 @@ const MenuService = require('../services/menus.service');
 const menuService = new MenuService();
 
 exports.createMenu = async (req, res, next) => {
-  const files = req.files;
+  const file = req.file;
   const { storeId } = req.params;
   const { menuName, price } = req.body;
 
@@ -15,7 +15,7 @@ exports.createMenu = async (req, res, next) => {
     if (!owner) {
       return res.status(401).json({ message: '권한이 없는 사용자입니다.' });
     }
-    await menuService.createMenu(storeId, menuName, price, files);
+    await menuService.createMenu(storeId, menuName, price, file);
 
     return res.status(200).json('생성을 성공했습니다.');
   } catch (err) {

@@ -10,6 +10,7 @@ class StoreRepository {
     image,
     ownerId
   ) => {
+    console.log(image);
     const createStoreData = await Store.create({
       name,
       storePhoneNumber,

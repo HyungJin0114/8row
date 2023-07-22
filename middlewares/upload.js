@@ -1,26 +1,52 @@
-const fs = require('fs');
+//아래 코드로 교체
+
 const multer = require('multer');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const multerS3 = require('multer-s3');
 const path = require('path');
 
-try {
-  fs.readdirSync('uploads');
-} catch (err) {
-  console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다.');
-  fs.mkdirSync('uploads');
-}
+const s3Client = new S3Client({
+  region: 'ap-northeast-2',
+  credentials: {
+    accessKeyId: process.env.ACCESSKEYID,
+    secretAccessKey: process.env.SECRETACCESSKEY,
+  },
+});
 
 const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, cb) {
-      cb(null, 'uploads/');
-    },
-    filename(req, file, cb) {
-      const ext = path.extname(file.originalname);
-      //   console.log(`path.basename: ${path.basename(file.originalname, ext)}`);
-      cb(null, path.basename(file.originalname, ext) + Date.now() + ext);
+  storage: multerS3({
+    s3: s3Client,
+    bucket: '8row',
+    acl: 'public-read',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    key: function (req, file, cb) {
+      cb(null, `${Date.now()}_${path.basename(file.originalname)}`);
     },
   }),
-  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: function (req, file, cb) {
+    if (file.fieldname !== 'image') {
+      return cb(new Error('Only image files are allowed'));
+    }
+    cb(null, true);
+  },
 });
+
+const singleUpload = fieldName => {
+  return function (req, res, next) {
+    upload.single(fieldName)(req, res, function (err) {
+      if (
+        err instanceof multer.MulterError &&
+        err.code === 'LIMIT_UNEXPECTED_FILE'
+      ) {
+        req.file = null;
+        next();
+      } else if (err) {
+        next(err);
+      } else {
+        next();
+      }
+    });
+  };
+};
 
 module.exports = upload;

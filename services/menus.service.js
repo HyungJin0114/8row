@@ -3,43 +3,15 @@ const MenuRepo = require('../repositories/menus.repository');
 class MenuService {
   menuRepo = new MenuRepo();
 
-  createMenu = async (storeId, menuName, price, files) => {
-    const filePaths = [];
-    const arrObj = [];
-    // 데이터 예시{storeId: 12, menuName: '123', price: 123, image: imgPath}
-    for (const file in files) {
-      filePaths.push(files[file][0].path);
-    }
-
-    // 입력이 하나일 경우 배열이 아니라 문자열로 들어옴
-    if (typeof menuName === 'string') {
-      menuName = [menuName];
-    }
-    if (typeof price === 'string') {
-      price = [price];
-    }
-
-    for (let i = 0; i < filePaths.length; i++) {
-      const obj = {
-        storeId: storeId,
-        menuName: menuName[i],
-        price: price[i],
-        image: filePaths[i],
-      };
-
-      arrObj.push(obj);
-    }
-
-    console.log(arrObj);
-
+  createMenu = async (storeId, menuName, price, file) => {
+    const image = file.location;
     try {
-      //   const result = await this.menuRepo.createMenu(
-      //     storeId,
-      //     menuName,
-      //     price,
-      //     imgPath
-      //   );
-      const result = await this.menuRepo.createMenu(arrObj);
+      const result = await this.menuRepo.createMenu(
+        storeId,
+        menuName,
+        price,
+        image
+      );
       if (!result) {
         return false;
       }

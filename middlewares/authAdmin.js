@@ -14,6 +14,6 @@ exports.isAdmin = async (req, res, next) => {
     next();
   } catch (err) {
     console.error(err);
-    return;
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
