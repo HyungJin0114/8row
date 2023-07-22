@@ -47,9 +47,10 @@ exports.getMenu = async (req, res, next) => {
 };
 
 exports.updateMenu = async (req, res, next) => {
+  const file = req.file;
   const { storeId, menuId } = req.params;
   // 일단 이미지 정보도 넣긴 했는데 이것은 기존에 만들때 정보이고 수정할 때 어떻게 할지 생각해보기
-  const { menuName, price, image } = req.body;
+  const { menuName, price } = req.body;
 
   try {
     const owner = await menuService.isOwner(res.locals.user, storeId);
@@ -62,7 +63,7 @@ exports.updateMenu = async (req, res, next) => {
       storeId,
       menuName,
       price,
-      image
+      file.location
     );
 
     if (!result) {

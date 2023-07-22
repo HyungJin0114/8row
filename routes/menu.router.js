@@ -18,7 +18,13 @@ router.post(
   upload.single('image'),
   createMenu
 );
-router.put('/:storeId/menus/:menuId', isSignedIn, isAdmin, updateMenu);
+router.put(
+  '/:storeId/menus/:menuId',
+  isSignedIn,
+  isAdmin,
+  upload.single('image'),
+  updateMenu
+);
 router.delete('/:storeId/menus/:menuId', isSignedIn, isAdmin, deleteMenu);
 
 module.exports = router;
