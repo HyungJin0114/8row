@@ -8,7 +8,7 @@ class StoreController {
     const userId = res.locals.user;
     const image = req.file;
     const { name, storePhoneNumber, category, location } = req.body;
-    console.log(image);
+
     const createStoreData = await this.storeService.createStore(
       name,
       storePhoneNumber,
@@ -54,7 +54,7 @@ class StoreController {
 
   //업체 전체보기
   getStore = async (req, res, next) => {
-    const { category } = req.body;
+    const { category } = req.query;
     const getStoreData = await this.storeService.getStore(category);
     if (getStoreData.status == 200) {
       return res
