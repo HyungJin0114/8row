@@ -1,4 +1,4 @@
-const { Menu, OrderMenu, Order, User } = require('../models');
+const { Menu, OrderMenu, Order, User, Review } = require('../models');
 
 class UserRepository {
   // 내 주문 내역
@@ -15,6 +15,10 @@ class UserRepository {
               attributes: ['menuName', 'price'],
             },
           ],
+        },
+        {
+          model: Review,
+          attributes: ['id'],
         },
       ],
       where: { userId },

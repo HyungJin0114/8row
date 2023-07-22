@@ -32,7 +32,7 @@ class Order extends Sequelize.Model {
 
   static associate(db) {
     db.Order.hasOne(db.Review, { foreignKey: 'id', targetKey: 'orderId' });
-    db.Review.belongsTo(db.Order, { foreignKey: 'orderId', targetKey: 'id' });
+    // db.Review.belongsTo(db.Order, { foreignKey: 'orderId', targetKey: 'id' });
     db.Order.belongsTo(db.User, { foreignKey: 'userId', targetKey: 'id' });
     db.Order.belongsTo(db.Store, { foreignKey: 'storeId', targetKey: 'id' });
     db.Order.hasMany(db.OrderMenu, { foreignKey: 'orderId', sourceKey: 'id' });

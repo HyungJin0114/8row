@@ -29,11 +29,19 @@ class StoreService {
   };
 
   //업체 리스트
-  getStore = async () => {
+  getStore = async category => {
     try {
-      const getStoreData = await this.stroeRepository.getStore();
-      return { status: 200, getStoreData };
+      if (category === '전체') {
+        const getStoreData = await this.stroeRepository.getStore();
+        return { status: 200, getStoreData };
+      } else {
+        const getStoreData = await this.stroeRepository.getCategoryStore(
+          category
+        );
+        return { status: 200, getStoreData };
+      }
     } catch (error) {
+      console.log(error);
       return { status: 400, message: '업체리스트 불러오기에 실패했습니다.' };
     }
   };
@@ -41,11 +49,9 @@ class StoreService {
   //업체 상세보기
   getStoreDetail = async storeId => {
     try {
-      console.log(storeId, 'ser1');
       const getStoreDetailData = await this.stroeRepository.getStoreDetail(
         storeId
       );
-      console.log(storeId, 'ser2');
       return { status: 200, getStoreDetailData };
     } catch (error) {
       console.log(error);
@@ -63,7 +69,7 @@ class StoreService {
     image
   ) => {
     try {
-      console.log("서서서");
+      console.log('서서서');
       const compareStoreData = await this.stroeRepository.compareStore(storeId);
       if (compareStoreData.ownerId !== userId) {
         return { status: 400, massage: '업체 수정 권한이 없습니다.' };
@@ -108,10 +114,10 @@ class StoreService {
   ) => {
     try {
       const compareStoreData = await this.stroeRepository.compareStore(storeId);
-      console.log("서비스서비스서비스서비스서비스서비스서비스서비스");
+      console.log('서비스서비스서비스서비스서비스서비스서비스서비스');
       console.log(compareStoreData);
 
-      if (!compareStoreData){
+      if (!compareStoreData) {
         return { status: 400, message: '업체 수정 권한이 없습니다.' };
       }
       if (compareStoreData.ownerId !== userId) {
@@ -137,7 +143,7 @@ class StoreService {
   deleteStore = async (userId, storeId) => {
     try {
       const compareStoreData = await this.stroeRepository.compareStore(storeId);
-      
+
       if (!compareStoreData) {
         return { status: 400, message: '삭제 권한이 없습니다.' };
       }

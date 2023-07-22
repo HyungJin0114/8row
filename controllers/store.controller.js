@@ -54,7 +54,8 @@ class StoreController {
 
   //업체 전체보기
   getStore = async (req, res, next) => {
-    const getStoreData = await this.storeService.getStore();
+    const { category } = req.body;
+    const getStoreData = await this.storeService.getStore(category);
     if (getStoreData.status == 200) {
       return res
         .status(getStoreData.status)

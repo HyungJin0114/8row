@@ -73,6 +73,24 @@ class StoreRepository {
     return getStoreData;
   };
 
+  //업체 카테고리 리스트
+  getCategoryStore = async category => {
+    const getStoreData = await Store.findAll({
+      attributes: [
+        'id',
+        'name',
+        'ownerId',
+        'location',
+        'storePhoneNumber',
+        'category',
+        'image',
+        'sales',
+      ],
+      where: { category },
+    });
+    return getStoreData;
+  };
+
   getStoreByUserId = async ownerId => {
     const store = await Store.findOne({ where: { ownerId } });
     return store;
