@@ -5,21 +5,25 @@ class StoreController {
 
   // 업체 등록
   createStore = async (req, res, next) => {
-    const userId = res.locals.user;
-    const image = req.file;
-    const { name, storePhoneNumber, category, location } = req.body;
+    try {
+      const userId = res.locals.user;
+      const image = req.file;
+      const { name, storePhoneNumber, category, location } = req.body;
 
-    const createStoreData = await this.storeService.createStore(
-      name,
-      storePhoneNumber,
-      category,
-      location,
-      image.location,
-      userId
-    );
-    return res
-      .status(createStoreData.status)
-      .json({ result: createStoreData.message });
+      const createStoreData = await this.storeService.createStore(
+        name,
+        storePhoneNumber,
+        category,
+        location,
+        image.location,
+        userId
+      );
+      return res
+        .status(createStoreData.status)
+        .json({ result: createStoreData.message });
+    } catch (error) {
+      return res.status(400).json({ result: '업체 등록에 실패했습니다.' });
+    }
   };
 
   // 업체 삭제
@@ -32,24 +36,27 @@ class StoreController {
 
   //업체 수정
   updateStore = async (req, res, next) => {
-    const userId = res.locals.user;
-    const image = req.file;
-    const { storeId } = req.params;
-    const { name, storePhoneNumber, category, location } = req.body;
+    try {
+      const userId = res.locals.user;
+      const image = req.file;
+      const { storeId } = req.params;
+      const { name, storePhoneNumber, category, location } = req.body;
 
-    const updateStoreData = await this.storeService.updateStore(
-      userId,
-      storeId,
-      name,
-      storePhoneNumber,
-      category,
-      location,
-      image.location
-    );
-    console.log(updateStoreData);
-    return res
-      .status(updateStoreData.status)
-      .json({ result: updateStoreData.message });
+      const updateStoreData = await this.storeService.updateStore(
+        userId,
+        storeId,
+        name,
+        storePhoneNumber,
+        category,
+        location,
+        image.location
+      );
+      return res
+        .status(updateStoreData.status)
+        .json({ result: updateStoreData.message });
+    } catch (error) {
+      return res.status(400).json({ result: '업체 등록에 실패했습니다.' });
+    }
   };
 
   //업체 전체보기
