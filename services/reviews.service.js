@@ -48,7 +48,7 @@ class ReviewService {
         return { status: 400, message: '수정 권한이 없습니다.' };
       }
       await this.reviewRepository.updateReviews(
-        userId,
+        // userId,
         reviewId,
         content,
         rating
