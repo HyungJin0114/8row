@@ -30,7 +30,7 @@ class ReviewService {
       if (compareReviewsData.userId !== userId) {
         return { status: 400, message: '삭제 권한이 없습니다.' };
       }
-      await this.reviewRepository.deleteReviews(userId, reviewId);
+      await this.reviewRepository.deleteReviews(reviewId);
 
       return { status: 200, message: '삭제가 완료되었습니다.' };
     } catch (error) {
