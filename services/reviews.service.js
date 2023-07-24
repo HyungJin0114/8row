@@ -47,12 +47,7 @@ class ReviewService {
       if (compareReviewsData.userId !== userId) {
         return { status: 400, message: '수정 권한이 없습니다.' };
       }
-      await this.reviewRepository.updateReviews(
-        userId,
-        reviewId,
-        content,
-        rating
-      );
+      await this.reviewRepository.updateReviews(reviewId, content, rating);
       return { status: 200, message: '수정이 완료되었습니다.' };
     } catch (error) {
       return { status: 400, message: '리뷰 수정에 실패했습니다..' };
